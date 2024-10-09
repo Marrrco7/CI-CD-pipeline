@@ -16,7 +16,7 @@ public class CicdAtcionsApplication {
 	@GetMapping(    "/greet")
 	public Map<String, String> greetUser() {
 		Map<String, String> response = new HashMap<>();
-		response.put("message", "Hello....... World!");
+		response.put("message", "The app is Up!!");
 		response.put("timestamp", LocalDateTime.now().toString());
 		return response;
 	}
