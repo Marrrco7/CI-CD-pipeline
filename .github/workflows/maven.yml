@@ -34,7 +34,7 @@ jobs:
         uses: azure/setup-kubectl@v1
         with:
           version: 'latest'
-      - name: Update Kubernetes deployment
+      - name: Update Kubernetes deployment #e
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         run: |
