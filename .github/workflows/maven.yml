@@ -27,8 +27,7 @@ jobs:
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
         image: marco712/springboot-images
-        tags: latest
-              ${{ github.sha }}
+        tags: latest, ${{ github.sha }}
         registry: docker.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
