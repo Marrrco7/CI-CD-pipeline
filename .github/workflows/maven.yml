@@ -44,7 +44,7 @@ jobs:
 
     - name: Update deployment.yaml
       run: |
-        sed -i "s|image: marco712/springboot-images:.*|image: marco712/springboot-images:${{ env.VERSION }}|g" deployment.yaml
+        sed -i "s|image: marco712/springboot-images:.*|image: marco712/springboot-images:${{ env.VERSION }}|g" manifests/deployment.yaml
 
     - name: Commit changes
       run: |
@@ -55,6 +55,6 @@ jobs:
 
     - name: Deploy to Kubernetes
       run: |
-        kubectl apply -f deployment.yaml
+        kubectl apply -f manifests/deployment.yaml
       env:
         KUBECONFIG: ${{ secrets.KUBECONFIG }}
