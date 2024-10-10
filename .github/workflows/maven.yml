@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +20,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
+    - name: Set new version
+      run: mvn versions:set -DnewVersion=1.0.${{ github.run_number }}-SNAPSHOT
+
     - name: Build with Maven
       run: mvn clean install
     
@@ -29,7 +31,7 @@ jobs:
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-
+        
 
     - name: Build and push Docker image
       uses: mr-smithers-excellent/docker-build-push@v6
