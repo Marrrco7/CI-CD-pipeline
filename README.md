@@ -84,7 +84,7 @@ The primary objectives of this project are:
 
 4. **Adopt Infrastructure as Code**: Use Terraform to provision the Kubernetes cluster and associated services for repeatable and scalable infrastructure management.
 
-5. **Foster Best Practices**: Encourage the use of modern DevOps practices, such as version control, automated testing, and monitoring, to improve collaboration and efficiency within the development team.
+5. **Foster Best Practices**: Encourage the use of modern DevOps practices, such as version control,  testing, and monitoring, to improve collaboration and efficiency within the development team.
 
 ## CI/CD Pipeline
 The CI/CD pipeline consists of the following key stages:
@@ -103,7 +103,7 @@ The CI/CD pipeline consists of the following key stages:
    - ArgoCD monitors Docker Hub for new images.
    - When a new image is detected, ArgoCD automatically updates the Kubernetes deployment, ensuring the application runs the newest version.
 
-5. **Feedback Loop**: Any issues during the build or deployment phases trigger notifications to the development team for immediate attention.
+
 
 ## Monitoring Strategy
 To ensure the reliability and performance of the microservices application, the following strategy is implemented:
@@ -116,27 +116,24 @@ To ensure the reliability and performance of the microservices application, the 
    - Visualizes the metrics collected by Prometheus, offering dashboards for easy monitoring of application performance and resource utilization.
    - Custom dashboards can focus on specific metrics or services for quick issue identification.
 
-3. **Alerting**: 
-   - Alerts are configured to notify the team when specific thresholds are breached (e.g., high error rates), enabling proactive issue resolution.
 
 ## Challenges and Solutions
 ### Challenges
-1. **Metrics Collection Issues**: Initial problems with Prometheus not collecting metrics due to misconfigurations.
-2. **Deployment Synchronization**: Challenges with ArgoCD failing to sync the latest images due to improper annotations.
+ **Deployment Synchronization**: Challenges with ArgoCD failing to sync the latest images due to improper annotations.
 
 ### Solutions
-1. **Metrics Configuration**: Corrected configurations of the application's metrics endpoint and ensured the Prometheus service account has the necessary permissions.
-2. **ArgoCD Annotations**: Added proper annotations to the ArgoCD application YAML to allow for automatic image updates.
+
+ **ArgoCD Annotations**: Added proper annotations to the ArgoCD application YAML to allow for automatic image updates.
 
 ## Best Practices
 1. **Use of Infrastructure as Code**: Leveraging Terraform for provisioning allows for repeatability and easier management of infrastructure.
-2. **Automated Testing**: Implementing unit and integration tests ensures that code changes are validated before deployment.
+2. **Automated Testing**: Implemented an integration test to check the http enpoint /greet
 3. **Monitoring and Logging**: Continuous monitoring with Prometheus and visualization in Grafana provide insights into application performance and system health.
 
 ## Future Improvements
-1. **Enhanced Monitoring**: Implement additional metrics and dashboards for deeper insights into application performance.
-2. **Automated Rollbacks**: Introduce automated rollback strategies in case of deployment failures.
-3. **Improved Security**: Integrate security scans into the CI/CD pipeline to identify vulnerabilities in dependencies and Docker images.
+1. Enhanced Monitoring: Implement additional metrics and dashboards for deeper insights into application performance.
+2. Automated Rollbacks: Introduce automated rollback strategies in case of deployment failures.
+3. Horizontal Pod Autoscaling (HPA): Implement HPA to automatically scale the number of pods based on the application's CPU and memory usage, ensuring optimal resource utilization and responsiveness to changing traffic loads.
 
 ## Conclusion
 This project successfully sets up a CI/CD pipeline and monitoring strategy for the client's microservices application. By implementing modern DevOps practices, the application is now scalable, efficient, and continuously monitored, aligning with the goals of the technology sector.
