@@ -31,7 +31,6 @@ jobs:
       run: |
         VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        
 
     - name: Build and push Docker image
       uses: mr-smithers-excellent/docker-build-push@v6
@@ -42,3 +41,20 @@ jobs:
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Update deployment.yaml
+      run: |
+        sed -i "s|image: marco712/springboot-images:.*|image: marco712/springboot-images:${{ env.VERSION }}|g" deployment.yaml
+
+    - name: Commit changes
+      run: |
+        git config --local user.email "github-actions@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -am "Update deployment.yaml with new image version ${{ env.VERSION }}"
+        git push
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f deployment.yaml
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
