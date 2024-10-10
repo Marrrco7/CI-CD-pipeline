@@ -1,3 +1,4 @@
+
 name: cicd flow
 
 on:
@@ -11,49 +12,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: Set new version
+      run: mvn versions:set -DnewVersion=1.0.${{ github.run_number }}
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
+    - name: Build with Maven
+      run: mvn clean install
+    
+    - name: Get the version number from Maven
+      id: get_version
+      run: |
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        
 
-      - name: Set new version
-        run: mvn versions:set -DnewVersion=1.0.${{ github.run_number }}
-
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Get the version number from Maven
-        id: get_version
-        run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Build and push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v6
-        with:
-          image: marco712/springboot-images
-          tags: ${{ env.VERSION }}
-          registry: docker.io
-          dockerfile: Dockerfile
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v1
-        with:
-          version: 'latest'
-
-      - name: Configure kubectl to use existing Kind cluster
-        run: |
-          kubectl config set-cluster kind-kind --server=https://127.0.0.1:6443 --insecure-skip-tls-verify
-          kubectl config set-credentials kind-user --token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-          kubectl config set-context kind-kind --cluster=kind-kind --user=kind-user
-          kubectl config use-context kind-kind
-
-      - name: Deploy to Kubernetes with kubectl
-        run: |
-          kubectl apply -f manifests/deployment.yaml
+    - name: Build and push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: marco712/springboot-images
+        tags: ${{ env.VERSION }}
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
