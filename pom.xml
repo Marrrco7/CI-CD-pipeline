@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.microserviceapp</groupId>
 	<artifactId>cicd-atcions</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.50</version>
 	<name>cicd-atcions</name>
 	<description>Demo project for Spring Boot</description>
 
