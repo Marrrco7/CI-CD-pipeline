@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: springboot-app
-          image: marco712/springboot-images:1.0.51
+          image: marco712/springboot-images:1.0.52
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
