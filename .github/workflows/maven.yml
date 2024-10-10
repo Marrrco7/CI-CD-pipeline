@@ -1,5 +1,3 @@
-
-
 name: cicd flow
 
 on:
@@ -26,16 +24,13 @@ jobs:
     - name: Build with Maven
       run: mvn clean install
     
-    
     - name: Get the version number from Maven
       id: get_version
-      run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+      run: |
+        VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-    
-    - name: Print version
-      run: echo "Generated version: ${{ env.VERSION }}"
 
-    #
     - name: Build and push Docker image
       uses: mr-smithers-excellent/docker-build-push@v6
       with:
@@ -45,4 +40,3 @@ jobs:
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-
