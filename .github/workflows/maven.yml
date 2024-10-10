@@ -52,6 +52,8 @@ jobs:
         git config --local user.name "GitHub Action"
         git commit -am "Update deployment.yaml with new image version ${{ env.VERSION }}"
         git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Deploy to Kubernetes
       run: |
