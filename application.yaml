@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: argocd
+  annotations:
+
+    argocd-image-updater.argoproj.io/springboot-app.image-list: marco712/springboot-images
+    argocd-image-updater.argoproj.io/springboot-app.update-strategy: latest
+    argocd-image-updater.argoproj.io/write-back-method: git
+
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Marrrco7/Devops-solution.git
+    targetRevision: HEAD
+    path: manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: myapp
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true
